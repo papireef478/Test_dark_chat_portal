@@ -6,7 +6,11 @@
     <title>TERMINAL 2.0 · SJRP WAR ROOM</title>
     <style>
         /* ---------- GLOBAL RESET & DESIGN TOKENS ---------- */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         :root {
             --matrix-green: #0f0;
@@ -36,8 +40,10 @@
         /* ----- MATRIX BACKGROUND ----- */
         #matrix-canvas {
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             z-index: 0;
             opacity: 0.32;
             pointer-events: none;
@@ -57,6 +63,7 @@
             font-family: var(--font-mono);
             letter-spacing: 1px;
         }
+
         h1 {
             font-size: 2rem;
             text-shadow: 0 0 8px var(--matrix-green);
@@ -64,6 +71,7 @@
             border-left: 4px solid var(--matrix-green);
             padding-left: 1rem;
         }
+
         h2 {
             font-size: 1.6rem;
             border-bottom: 2px solid var(--matrix-green);
@@ -71,12 +79,14 @@
             margin: 1.5rem 0 1rem;
             padding-bottom: 0.25rem;
         }
+
         h3 {
             font-size: 1.3rem;
             border-left: 4px solid var(--matrix-green);
             padding-left: 12px;
             margin: 1rem 0 1rem;
         }
+
         .section-sub {
             color: #2e8b57;
             font-size: 0.9rem;
@@ -95,7 +105,10 @@
             backdrop-filter: blur(2px);
             transition: box-shadow 0.2s;
         }
-        .card:hover { box-shadow: 0 0 12px rgba(0, 255, 0, 0.2); }
+
+        .card:hover {
+            box-shadow: 0 0 12px rgba(0, 255, 0, 0.2);
+        }
 
         .grid-2 {
             display: grid;
@@ -120,17 +133,28 @@
             text-align: center;
             letter-spacing: 0.5px;
         }
+
         .btn:hover {
             background: #0c0;
             box-shadow: 0 0 12px var(--matrix-green);
             transform: translateY(-1px);
         }
-        .btn.small { padding: 5px 12px; font-size: 0.75rem; }
-        .btn.danger { background: var(--danger-red); color: white; }
+
+        .btn.small {
+            padding: 5px 12px;
+            font-size: 0.75rem;
+        }
+
+        .btn.danger {
+            background: var(--danger-red);
+            color: white;
+        }
+
         .btn.danger:hover {
             background: #cc0000;
             box-shadow: 0 0 10px var(--danger-red);
         }
+
         .btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
@@ -150,10 +174,12 @@
             width: 100%;
             transition: 0.15s;
         }
+
         input:focus, select:focus, textarea:focus {
             box-shadow: 0 0 8px var(--matrix-green);
             border-color: #0f0;
         }
+
         label {
             font-size: 0.85rem;
             font-weight: bold;
@@ -168,11 +194,13 @@
             border-collapse: collapse;
             margin: 1rem 0;
         }
+
         th, td {
             text-align: left;
             padding: 10px 8px;
             border-bottom: 1px solid var(--border-subtle);
         }
+
         th {
             color: var(--matrix-green);
             border-bottom: 2px solid var(--matrix-green);
@@ -188,6 +216,7 @@
             border-radius: 4px;
             border: 1px solid #333;
         }
+
         .timer-item {
             border-left: 3px solid var(--matrix-green);
             padding: 10px 15px;
@@ -200,7 +229,11 @@
             gap: 10px;
             font-size: 0.85rem;
         }
-        .timer-item.defending { border-left-color: var(--danger-red); }
+
+        .timer-item.defending {
+            border-left-color: var(--danger-red);
+        }
+
         .verified-item {
             border-left: 3px solid #0f0;
             padding: 8px 12px;
@@ -219,6 +252,7 @@
             display: inline-block;
             letter-spacing: 0.5px;
         }
+
         .badge-outline {
             border: 1px solid var(--matrix-green);
             background: transparent;
@@ -236,6 +270,7 @@
             border-radius: 8px;
             margin-bottom: 2rem;
         }
+
         .nav-bar a {
             color: var(--matrix-green);
             text-decoration: none;
@@ -246,6 +281,7 @@
             transition: all 0.2s;
             font-size: 0.9rem;
         }
+
         .nav-bar a:hover, .nav-bar a.active {
             background: var(--matrix-green);
             color: #000;
@@ -255,15 +291,21 @@
         .modal-overlay {
             display: none;
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: rgba(0, 0, 0, 0.96);
             backdrop-filter: blur(6px);
             z-index: 10000;
             justify-content: center;
             align-items: center;
         }
-        .modal-overlay.active { display: flex; }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
         .modal-content {
             background: #111;
             border: 2px solid var(--matrix-green);
@@ -274,10 +316,12 @@
             box-shadow: 0 0 40px rgba(0, 255, 0, 0.3);
             animation: modalSlide 0.25s ease-out;
         }
+
         @keyframes modalSlide {
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
         .modal-header {
             display: flex;
             justify-content: space-between;
@@ -286,11 +330,13 @@
             padding-bottom: 10px;
             margin-bottom: 1rem;
         }
+
         .modal-close {
             font-size: 28px;
             cursor: pointer;
             color: #0f0;
         }
+
         .modal-footer {
             display: flex;
             justify-content: flex-end;
@@ -301,7 +347,8 @@
         /* ----- NOTIFICATIONS ----- */
         .notification {
             position: fixed;
-            top: 24px; right: 24px;
+            top: 24px;
+            right: 24px;
             background: #111;
             border: 2px solid var(--matrix-green);
             padding: 14px 20px;
@@ -313,14 +360,17 @@
             font-weight: bold;
             backdrop-filter: blur(5px);
         }
+
         .notification.error {
             border-color: var(--danger-red);
             color: #f77;
         }
+
         .notification.show {
             display: block;
             animation: slideRight 0.25s ease-out;
         }
+
         @keyframes slideRight {
             from { transform: translateX(400px); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
@@ -334,6 +384,7 @@
             border-radius: 6px;
             border-left: 4px solid var(--matrix-green);
         }
+
         .week-highlight {
             background: #0f0;
             color: #000;
@@ -344,8 +395,14 @@
         }
 
         /* ----- SCROLLBAR ----- */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #000;
+        }
+
         ::-webkit-scrollbar-thumb {
             background: #0f0;
             border-radius: 4px;
@@ -354,19 +411,26 @@
         /* ----- UTILS ----- */
         .color-swatch {
             display: inline-block;
-            width: 32px; height: 32px;
+            width: 32px;
+            height: 32px;
             border-radius: 4px;
             margin-right: 10px;
             border: 1px solid #2c2c2c;
             vertical-align: middle;
         }
+
         .flex-between {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
         }
-        hr { border-color: #0f0; margin: 1rem 0; }
+
+        hr {
+            border-color: #0f0;
+            margin: 1rem 0;
+        }
+
         footer {
             text-align: center;
             margin-top: 3rem;
@@ -379,7 +443,8 @@
         /* ----- LOADING SPINNER ----- */
         .loading {
             display: inline-block;
-            width: 16px; height: 16px;
+            width: 16px;
+            height: 16px;
             border: 2px solid #0f0;
             border-top-color: transparent;
             border-radius: 50%;
@@ -387,9 +452,18 @@
             margin-right: 8px;
             vertical-align: middle;
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .btn.loading { pointer-events: none; }
-        .btn.loading .btn-text { opacity: 0.7; }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .btn.loading {
+            pointer-events: none;
+        }
+
+        .btn.loading .btn-text {
+            opacity: 0.7;
+        }
     </style>
 </head>
 <body>
@@ -517,37 +591,41 @@
         let currentUser = null;
         let gameData = null;
 
-        // ==================== API CLIENT ====================
+        // ==================== 🔧 CORS-FIXED API CLIENT ====================
         const API = {
-            async _fetch(action, payload) {
-                try {
-                    const response = await fetch(API_URL, {
+            _fetch(action, payload) {
+                return new Promise((resolve) => {
+                    // ✅ KEY FIX: Use text/plain to avoid CORS preflight
+                    fetch(API_URL, {
                         method: "POST",
-                        headers: { "Content-Type": "application/json" },
+                        headers: { "Content-Type": "text/plain" },
                         body: JSON.stringify({ action, ...payload })
+                    })
+                    .then(res => res.text())
+                    .then(text => {
+                        try {
+                            resolve(JSON.parse(text));
+                        } catch {
+                            resolve({ success: true, raw: text });
+                        }
+                    })
+                    .catch(err => {
+                        console.error("API Error:", err);
+                        resolve({ success: false, error: err.message });
                     });
-                    const text = await response.text();
-                    try {
-                        return JSON.parse(text);
-                    } catch {
-                        return { success: true, raw: text };
-                    }
-                } catch (err) {
-                    console.error("API Error:", err);
-                    return { success: false, error: err.message };
-                }
+                });
             },
-            async login(username, password) {
-                return await this._fetch("login", { username, password });
+            login(username, password) {
+                return this._fetch("login", { username, password });
             },
-            async saveData(user, data) {
-                return await this._fetch("saveData", { user, data });
+            saveData(user, data) {
+                return this._fetch("saveData", { user, data });
             },
-            async getFullData(user) {
-                return await this._fetch("getFullData", { user });
+            getFullData(user) {
+                return this._fetch("getFullData", { user });
             },
-            async logAction(user, action, details) {
-                return await this._fetch("logAction", { 
+            logAction(user, action, details) {
+                return this._fetch("logAction", { 
                     user, 
                     data: { timestamp: new Date().toISOString(), action, details }
                 });
@@ -599,9 +677,11 @@
 
         async function checkConnection() {
             try {
-                const res = await fetch(API_URL.replace('/exec', '') + '/exec', { method: 'GET' });
+                const res = await fetch(API_URL, { method: "GET" });
                 return res.ok;
-            } catch { return false; }
+            } catch { 
+                return false; 
+            }
         }
 
         // ==================== LOGIN HANDLER ====================

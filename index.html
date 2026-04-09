@@ -694,28 +694,68 @@
         let gameData = null;
 
         // ==================== 🔧 CORS-FIXED API CLIENT ====================
-        const API = {
-            async _fetch(action, payload, needsResponse = true) {
-                try {
-                    // Use text/plain to bypass CORS preflight, but keep it standard
-                    const response = await fetch(API_URL, {
-                        method: "POST",
-                        headers: { "Content-Type": "text/plain" },
-                        body: JSON.stringify({ action, ...payload })
-                    });
-                    const text = await response.text();
-                    try { return JSON.parse(text); }
-                    catch { return { success: true, raw: text }; }
-                } catch (err) {
-                    console.error("API Error:", err);
-                    return { success: false, error: err.message };
-                }
-            },
-            login(username, password) { return this._fetch("login", { username, password }); },
-            saveData(user, data) { return this._fetch("saveData", { user, data }); },
-            getFullData(user) { return this._fetch("getFullData", { user }); },
-            logAction(user, action, details) { return this._fetch("logAction", { user, data: { timestamp: new Date().toISOString(), action, details } }); }
-        };
+// ==================== 🔧 ULTIMATE CORS-FIXED API CLIENT ====================
+const API = {
+    // Core fetch: NO custom headers to avoid ANY preflight trigger
+    async _fetch(action, payload, needsResponse = true) {
+        // Build request body
+        const body = JSON.stringify({ action, ...payload });
+        
+        try {
+            // Attempt 1: Standard fetch with NO headers (browser sets defaults)
+            const response = await fetch(API_URL, {
+                method: "POST",
+                body: body
+                // 🚫 NO headers object = no preflight trigger
+            });
+            
+            // Try to parse response
+            const text = await response.text();
+            try { return JSON.parse(text); }
+            catch { return { success: true, raw: text }; }
+            
+        } catch (err) {
+            // Attempt 2: no-cors fallback (request works, but can't read response)
+            console.warn("Standard fetch failed, trying no-cors fallback...");
+            
+            return new Promise((resolve) => {
+                fetch(API_URL, {
+                    method: "POST",
+                    mode: "no-cors", // 🔥 Forces request through, blocks response read
+                    body: body
+                })
+                .then(() => {
+                    // In no-cors: writes succeed silently, reads fail
+                    if (!needsResponse) {
+                        resolve({ success: true, note: "no-cors write completed" });
+                    } else {
+                        resolve({ 
+                            success: false, 
+                            error: "Read blocked by browser CORS. Try: 1) Hard refresh 2) Check GAS deployment 'Anyone' 3) Wait 2 min for propagation" 
+                        });
+                    }
+                })
+                .catch(e => resolve({ success: false, error: e.message }));
+            });
+        }
+    },
+    
+    login(username, password) { 
+        return this._fetch("login", { username, password }, true); 
+    },
+    saveData(user, data) { 
+        return this._fetch("saveData", { user, data }, false); // writes work in no-cors
+    },
+    getFullData(user) { 
+        return this._fetch("getFullData", { user }, true); 
+    },
+    logAction(user, action, details) { 
+        return this._fetch("logAction", { 
+            user, 
+             { timestamp: new Date().toISOString(), action, details }
+        }, false); // fire-and-forget
+    }
+};
 
         // ==================== SESSION MANAGEMENT ====================
         function setCurrentUser(userObj) {

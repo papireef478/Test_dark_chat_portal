@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>TERMINAL 2.0 · SJRP WAR ROOM</title>
+    <title>DESIGN GUIDE · TERMINAL 2.0 · MATRIX CORE</title>
     <style>
         /* ---------- GLOBAL RESET & DESIGN TOKENS ---------- */
         * {
@@ -37,7 +37,7 @@
             line-height: 1.5;
         }
 
-        /* ----- MATRIX BACKGROUND ----- */
+        /* ----- MATRIX BACKGROUND (ENHANCED VISIBILITY) ----- */
         #matrix-canvas {
             position: fixed;
             top: 0;
@@ -45,11 +45,12 @@
             width: 100%;
             height: 100%;
             z-index: 0;
-            opacity: 0.32;
+            opacity: 0.32;          /* more present than original 0.15 — dynamic but elegant */
             pointer-events: none;
             transition: opacity 0.3s;
         }
 
+        /* main content layer */
         .design-guide {
             position: relative;
             z-index: 10;
@@ -58,7 +59,7 @@
             padding: 2rem 1.5rem;
         }
 
-        /* ----- TYPOGRAPHY ----- */
+        /* ----- TYPOGRAPHY & HEADERS ----- */
         h1, h2, h3, h4, .glow-text {
             font-family: var(--font-mono);
             letter-spacing: 1px;
@@ -95,7 +96,7 @@
             padding-left: 0.75rem;
         }
 
-        /* ----- CARDS ----- */
+        /* ----- CARD SYSTEM (replica from original) ----- */
         .card {
             background: var(--card-bg);
             border: 1px solid var(--matrix-green);
@@ -110,13 +111,14 @@
             box-shadow: 0 0 12px rgba(0, 255, 0, 0.2);
         }
 
+        /* grid layout */
         .grid-2 {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
             gap: 1.5rem;
         }
 
-        /* ----- BUTTONS ----- */
+        /* ----- BUTTONS (exact style from portal) ----- */
         .btn {
             background: var(--matrix-green);
             color: #000;
@@ -161,7 +163,7 @@
             transform: none;
         }
 
-        /* ----- FORMS ----- */
+        /* ----- FORM ELEMENTS (inputs, selects, textarea) ----- */
         input, select, textarea {
             background: var(--input-bg);
             border: 1px solid var(--matrix-green);
@@ -188,7 +190,7 @@
             letter-spacing: 0.5px;
         }
 
-        /* ----- TABLES ----- */
+        /* ----- TABLES (standings style) ----- */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -207,7 +209,7 @@
             font-weight: bold;
         }
 
-        /* ----- TIMER FEED ----- */
+        /* ----- TIMER FEED & ITEMS (replica) ----- */
         .timer-feed, .pending-timers {
             max-height: 280px;
             overflow-y: auto;
@@ -259,7 +261,7 @@
             color: var(--matrix-green);
         }
 
-        /* ----- NAVBAR ----- */
+        /* ----- NAVBAR (tabs style) ----- */
         .nav-bar {
             background: rgba(0, 0, 0, 0.9);
             border: 1px solid var(--matrix-green);
@@ -287,7 +289,7 @@
             color: #000;
         }
 
-        /* ----- MODAL ----- */
+        /* ----- MODAL (exact replica from original) ----- */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -344,7 +346,7 @@
             margin-top: 1.5rem;
         }
 
-        /* ----- NOTIFICATIONS ----- */
+        /* ----- NOTIFICATION (toast) ----- */
         .notification {
             position: fixed;
             top: 24px;
@@ -376,7 +378,7 @@
             to { transform: translateX(0); opacity: 1; }
         }
 
-        /* ----- RULES ----- */
+        /* ----- RULE CARD / HIGHLIGHT ----- */
         .rule-card {
             background: #111;
             margin-bottom: 15px;
@@ -394,21 +396,19 @@
             display: inline-block;
         }
 
-        /* ----- SCROLLBAR ----- */
+        /* scrollbar matching terminal */
         ::-webkit-scrollbar {
             width: 8px;
         }
-
         ::-webkit-scrollbar-track {
             background: #000;
         }
-
         ::-webkit-scrollbar-thumb {
             background: #0f0;
             border-radius: 4px;
         }
 
-        /* ----- UTILS ----- */
+        /* color swatch utility */
         .color-swatch {
             display: inline-block;
             width: 32px;
@@ -440,37 +440,21 @@
             padding: 1.5rem;
         }
 
-        /* ----- LOADING SPINNER ----- */
-        .loading {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid #0f0;
-            border-top-color: transparent;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin-right: 8px;
-            vertical-align: middle;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .btn.loading {
-            pointer-events: none;
-        }
-
-        .btn.loading .btn-text {
-            opacity: 0.7;
-        }
+        /* ----- LOADING STATE ----- */
+        .btn.loading { pointer-events: none; opacity: 0.7; }
+        .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid #000; border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite; vertical-align: middle; margin-right: 6px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
+
+    <!-- Matrix Rain Canvas (Enhanced Presence) -->
     <canvas id="matrix-canvas"></canvas>
+
+    <!-- Notification Container (demo) -->
     <div id="globalNotify" class="notification"></div>
 
-    <!-- Modal -->
+    <!-- Modal structure (design demo) -->
     <div id="demoModal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
@@ -478,7 +462,7 @@
                 <span class="modal-close" id="closeModalBtn">&times;</span>
             </div>
             <div class="modal-body" id="modalDemoBody">
-                <p>This is a modal window styled after the SJRP portal.</p>
+                <p>This is a modal window styled after the SJRP portal. Perfect for alerts, confirmations, or data entry.</p>
                 <input type="text" placeholder="Sample input field" id="demoModalInput" style="margin-top: 12px;">
             </div>
             <div class="modal-footer">
@@ -489,10 +473,11 @@
     </div>
 
     <div class="design-guide">
+        <!-- Header -->
         <div class="flex-between" style="margin-bottom: 1rem;">
             <div>
-                <h1>⎯ SJRP WAR ROOM ⎯<span style="font-size:1.2rem;"> TERMINAL v2.0</span></h1>
-                <div class="section-sub">Block War System · Live Data Sync · Matrix Core</div>
+                <h1>⎯ DESIGN SYSTEM ⎯<span style="font-size:1.2rem;">  TERMINAL v2.0</span></h1>
+                <div class="section-sub">Matrix core · neon phosphor · tactical UI components</div>
             </div>
             <div><span class="badge" id="connectionStatus">🔴 OFFLINE</span></div>
         </div>
@@ -503,10 +488,12 @@
             <form id="loginForm" style="margin-top: 1.5rem;">
                 <label>Callsign / Username</label>
                 <input type="text" id="loginUsername" placeholder="gh0st_operator" required autocomplete="username">
+                
                 <label style="margin-top: 12px;">Passcode</label>
                 <input type="password" id="loginPassword" placeholder="••••••••" required autocomplete="current-password">
+                
                 <button type="submit" class="btn" style="width: 100%; margin-top: 1.5rem;" id="loginBtn">
-                    <span class="btn-text">▶ ESTABLISH CONNECTION</span>
+                    ▶ ESTABLISH CONNECTION
                 </button>
             </form>
             <div class="section-sub" style="text-align: center; margin-top: 12px;">
@@ -517,70 +504,185 @@
             </div>
         </div>
 
-        <!-- DASHBOARD (hidden until login) -->
+        <!-- DASHBOARD SECTION (hidden until login) -->
         <div id="dashboardSection" style="display: none;">
             <div class="flex-between" style="margin-bottom: 1rem; padding: 0.5rem 1rem; background: rgba(0,255,0,0.1); border-radius: 4px;">
                 <span id="currentUserDisplay">👤 <em>Guest</em></span>
                 <button class="btn small danger" onclick="logout()">🚪 LOGOUT</button>
             </div>
-
-            <!-- Gang Standings (Dynamic) -->
+            
+            <!-- 1. COLOR PALETTE -->
             <div class="card">
-                <h3>🏆 LIVE STANDINGS</h3>
-                <table id="standingsTable">
-                    <thead><tr><th>Rank</th><th>Gang</th><th>Points</th><th>Flips</th><th>Status</th></tr></thead>
-                    <tbody id="standingsBody">
-                        <tr><td colspan="5" style="text-align:center;">📡 Loading gang data...</td></tr>
-                    </tbody>
-                </table>
-                <button class="btn small" id="refreshStandingsBtn" style="margin-top: 8px;">🔄 Refresh Data</button>
-            </div>
-
-            <!-- Timer Feed (Dynamic) -->
-            <div class="grid-2">
-                <div class="card">
-                    <h3>⏲️ ACTIVE TIMERS</h3>
-                    <div class="timer-feed" id="timerFeed">
-                        <div class="timer-item" style="justify-content:center;">
-                            <span>📡 Waiting for live timer data...</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <h3>✅ VERIFIED FLIPS</h3>
-                    <div class="timer-feed" id="verifiedFeed" style="max-height: 200px;">
-                        <div class="verified-item">✓ No verified flips yet</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- War State Controls -->
-            <div class="card">
-                <h3>⚙️ WAR CONTROLS</h3>
-                <div class="flex-between" style="flex-wrap: wrap; gap: 12px;">
-                    <div>
-                        <span class="badge" id="warStatusBadge">WAR: <span id="warActiveText">INACTIVE</span></span>
-                        <span class="badge-outline badge" style="margin-left: 8px;">Week <span id="currentWeekDisplay">1</span></span>
-                    </div>
-                    <div>
-                        <button class="btn small" id="toggleWarBtn" disabled>🔓 Toggle War State</button>
-                        <button class="btn small" id="saveStateBtn">💾 Force Save</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Design Guide Sections (kept for reference) -->
-            <div class="card">
-                <h3>🎨 DESIGN TOKENS (Reference)</h3>
+                <h3>🎨 CHROMATIC COMMAND</h3>
                 <div style="display: flex; flex-wrap: wrap; gap: 24px; margin-top: 12px;">
                     <div><span class="color-swatch" style="background: #000; border:1px solid #0f0;"></span> <strong>#000000</strong> — Abyss</div>
-                    <div><span class="color-swatch" style="background: #0f0;"></span> <strong>#0f0</strong> — Primary</div>
-                    <div><span class="color-swatch" style="background: #f00;"></span> <strong>#f00</strong> — Danger</div>
+                    <div><span class="color-swatch" style="background: #0f0;"></span> <strong>#0f0 / lime</strong> — Primary glow</div>
+                    <div><span class="color-swatch" style="background: #111;"></span> <strong>#111</strong> — Input bg</div>
+                    <div><span class="color-swatch" style="background: #f00;"></span> <strong>#f00</strong> — Danger/Alert</div>
+                    <div><span class="color-swatch" style="background: #ff0;"></span> <strong>#ff0</strong> — Highlight</div>
+                    <div><span class="color-swatch" style="background: rgba(0,0,0,0.85); border:1px solid #0f0;"></span> <strong>rgba(0,0,0,0.85)</strong> — Cards</div>
+                </div>
+                <div style="margin-top: 16px;"><span class="badge">#0f0 glow</span> <span class="badge-outline badge" style="background:transparent;">box-shadow: 0 0 12px #0f0</span></div>
+            </div>
+
+            <!-- 2. TYPOGRAPHY -->
+            <div class="card">
+                <h3>⌨️ TYPEFACE & SCALE</h3>
+                <p style="font-family: monospace;">Primary: 'Courier New', 'Fira Code', monospace — all caps / code aesthetic.</p>
+                <div style="font-size: 2rem; text-shadow:0 0 5px #0f0;">GLOWING HEADER</div>
+                <div style="font-size: 1.2rem; margin: 8px 0;">Terminal body text — crisp, readable, immersive.</div>
+                <div class="badge">UPPERCASE BADGE</div>
+                <div class="section-sub" style="margin-top: 8px;">Letter-spacing: 1px for headings, monospace everywhere.</div>
+            </div>
+
+            <!-- 3. BUTTON FAMILY -->
+            <div class="card">
+                <h3>🔘 BUTTONS — ACTION READY</h3>
+                <div>
+                    <button class="btn">Primary Action</button>
+                    <button class="btn small">Small</button>
+                    <button class="btn danger">Destructive</button>
+                    <button class="btn" disabled>Disabled</button>
+                    <button class="btn small" style="background:#222; color:#0f0; border:1px solid #0f0;">Outline Variant</button>
+                </div>
+                <div style="margin-top: 16px;">
+                    <button class="btn small" id="demoNotifyBtn">📡 SHOW NOTIFICATION</button>
+                    <button class="btn small" id="demoModalBtn">🗔 OPEN MODAL</button>
+                </div>
+                <div class="section-sub" style="margin-top: 12px;">Hover: translateY(-1px) + glow shadow. Danger red with contrast.</div>
+            </div>
+
+            <!-- 4. FORM ELEMENTS (inputs, selects) -->
+            <div class="card">
+                <h3>📝 INPUTS / TERMINAL FIELDS</h3>
+                <div class="grid-2">
+                    <div>
+                        <label>Username / Callsign</label>
+                        <input type="text" placeholder="gh0st_operator" value="SJRP_Agent">
+                        <label style="margin-top: 12px;">Passphrase</label>
+                        <input type="password" placeholder="••••••••">
+                    </div>
+                    <div>
+                        <label>Gang selection</label>
+                        <select>
+                            <option>Fallen Angels</option>
+                            <option>Phantom Rose</option>
+                            <option>99OTF</option>
+                            <option>Noctis</option>
+                        </select>
+                        <label style="margin-top: 12px;">Mission brief</label>
+                        <textarea rows="2" placeholder="Encrypted message..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. CARDS & GRID -->
+            <div class="grid-2">
+                <div class="card">
+                    <h3>🏆 STANDINGS CARD</h3>
+                    <table style="width:100%">
+                        <thead><tr><th>Rank</th><th>Gang</th><th>Points</th></tr></thead>
+                        <tbody>
+                            <tr><td>#1</td><td>Fallen Angels</td><td>24</td></tr>
+                            <tr><td>#2</td><td>Phantom Rose</td><td>19</td></tr>
+                            <tr><td>#3</td><td>99OTF</td><td>15</td></tr>
+                        </tbody>
+                    </table>
+                    <button class="btn small" style="margin-top: 8px;">VIEW FULL STANDINGS</button>
+                </div>
+                <div class="card">
+                    <h3>⏲️ TIMER FEED (ACTIVE)</h3>
+                    <div class="timer-feed" style="max-height: 200px;">
+                        <div class="timer-item">
+                            <span><strong>Fallen Angels</strong> → Phantom Rose</span>
+                            <span>03:24</span>
+                        </div>
+                        <div class="timer-item defending">
+                            <span><strong>99OTF</strong> → Noctis (DEFEND)</span>
+                            <span>01:12</span>
+                        </div>
+                        <div class="timer-item">
+                            <span>Black Lotus MC → Vipers Curse</span>
+                            <span>04:56</span>
+                        </div>
+                    </div>
+                    <div class="verified-item">✓ Verified: Fallen Angels flipped Noctis</div>
+                </div>
+            </div>
+
+            <!-- 6. TABLE (detailed) -->
+            <div class="card">
+                <h3>📊 DATA TABLE / WAR LEDGER</h3>
+                <table>
+                    <thead><tr><th>Gang</th><th>Flips</th><th>Losses</th><th>Size</th><th>Status</th></tr></thead>
+                    <tbody>
+                        <tr><td>Fallen Angels</td><td>12</td><td>2</td><td>14</td><td style="color:#0f0;">ACTIVE</td></tr>
+                        <tr><td>Phantom Rose</td><td>8</td><td>5</td><td>9</td><td style="color:#ff0;">WARNING</td></tr>
+                        <tr><td>Noctis</td><td>4</td><td>7</td><td>6</td><td style="color:#f00;">CRITICAL</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 7. RULES / TREATY STYLE -->
+            <div class="card">
+                <h3>📜 TREATY CARD (RULE PREVIEW)</h3>
+                <div class="rule-card">
+                    <strong>🔹 BLOCK WAR MECHANICS</strong>
+                    <p>Attack enemy home block with 3+ members, start push timer (5min). Hold to earn points. Defend by stopping enemy timer.</p>
+                </div>
+                <div class="rule-card">
+                    <strong>🔹 SHOT CALLER PROTOCOL</strong>
+                    <p>Only designated Shot Callers can start/stop timers. If killed, gang suffers 15min cooldown.</p>
+                </div>
+                <div class="rule-card">
+                    <strong>🔹 PD INFORMANT ROLE</strong>
+                    <p>Undercover officers verify flips. Killing an informant gives +3 points and pauses war timers.</p>
+                </div>
+            </div>
+
+            <!-- 8. NAVBAR & BADGES -->
+            <div class="nav-bar">
+                <a class="active">Dashboard</a>
+                <a>Treaty</a>
+                <a>Cookout</a>
+                <a>Intel Hub</a>
+                <a style="margin-left:auto;">🔒 War Room</a>
+            </div>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 1rem;">
+                <span class="badge">HOST: FALLEN ANGELS</span>
+                <span class="badge-outline badge" style="background:transparent;">WEEK 2 · WAR ACTIVE</span>
+                <span class="badge" style="background:#f00; color:white;">EMERGENCY</span>
+                <span class="week-highlight">COOKOUT EVENT</span>
+            </div>
+
+            <!-- 9. MODAL PREVIEW + NOTIFICATION DEMO already handled by JS but show static style -->
+            <div class="grid-2">
+                <div class="card">
+                    <h3>🗃️ MODAL OVERLAY STYLE</h3>
+                    <p>Dark backdrop + green border, smooth animation, form fields. Click below to open live modal.</p>
+                    <button class="btn" id="openModalStaticBtn">OPEN DEMO MODAL</button>
+                </div>
+                <div class="card">
+                    <h3>🔔 NOTIFICATION TOAST</h3>
+                    <p>Floating alert system (top-right) with error/success variants. Auto-dismiss after 3.5s.</p>
+                    <button class="btn small" id="notifSuccessBtn">✨ SUCCESS NOTIFY</button>
+                    <button class="btn small danger" id="notifErrorBtn" style="margin-left: 5px;">⚠️ ERROR NOTIFY</button>
+                </div>
+            </div>
+
+            <!-- 10. MATRIX BACKGROUND NOTE -->
+            <div class="card">
+                <h3>🌌 MATRIX BACKGROUND (ACTIVE)</h3>
+                <p><span class="badge">live canvas</span> Dynamic binary rain with configurable opacity, speed, and green phosphor. The missing element is now restored with enhanced visibility (opacity 0.32) but can be customized via CSS. Terminal effect creates immersive cyberpunk atmosphere.</p>
+                <div class="flex-between" style="margin-top: 10px;">
+                    <span>🔧 Customization: change canvas opacity, char set, or fall speed in JS.</span>
+                    <button id="toggleMatrixOpacity" class="btn small">🌓 TOGGLE OPACITY (HIGH/LOW)</button>
                 </div>
             </div>
 
             <footer>
-                SJRP WAR ROOM v2.0 · Connected to Google Sheets Backend · All data encrypted in transit
+                DESIGN SYSTEM v1.0 — Extracted from SJRP Drug Trust Portal — Fonts, Buttons, Matrix core, Cards, Timer items, Terminal palette. 
+                All components ready for integration.
             </footer>
         </div>
     </div>
@@ -593,46 +695,29 @@
 
         // ==================== 🔧 CORS-FIXED API CLIENT ====================
         const API = {
-            _fetch(action, payload) {
-                return new Promise((resolve) => {
-                    // ✅ KEY FIX: Use text/plain to avoid CORS preflight
-                    fetch(API_URL, {
+            async _fetch(action, payload, needsResponse = true) {
+                try {
+                    // Use text/plain to bypass CORS preflight, but keep it standard
+                    const response = await fetch(API_URL, {
                         method: "POST",
                         headers: { "Content-Type": "text/plain" },
                         body: JSON.stringify({ action, ...payload })
-                    })
-                    .then(res => res.text())
-                    .then(text => {
-                        try {
-                            resolve(JSON.parse(text));
-                        } catch {
-                            resolve({ success: true, raw: text });
-                        }
-                    })
-                    .catch(err => {
-                        console.error("API Error:", err);
-                        resolve({ success: false, error: err.message });
                     });
-                });
+                    const text = await response.text();
+                    try { return JSON.parse(text); }
+                    catch { return { success: true, raw: text }; }
+                } catch (err) {
+                    console.error("API Error:", err);
+                    return { success: false, error: err.message };
+                }
             },
-            login(username, password) {
-                return this._fetch("login", { username, password });
-            },
-            saveData(user, data) {
-                return this._fetch("saveData", { user, data });
-            },
-            getFullData(user) {
-                return this._fetch("getFullData", { user });
-            },
-            logAction(user, action, details) {
-                return this._fetch("logAction", { 
-                    user, 
-                    data: { timestamp: new Date().toISOString(), action, details }
-                });
-            }
+            login(username, password) { return this._fetch("login", { username, password }); },
+            saveData(user, data) { return this._fetch("saveData", { user, data }); },
+            getFullData(user) { return this._fetch("getFullData", { user }); },
+            logAction(user, action, details) { return this._fetch("logAction", { user, data: { timestamp: new Date().toISOString(), action, details } }); }
         };
 
-        // ==================== SESSION ====================
+        // ==================== SESSION MANAGEMENT ====================
         function setCurrentUser(userObj) {
             currentUser = userObj;
             localStorage.setItem("sjrp_user", JSON.stringify(userObj));
@@ -661,14 +746,12 @@
             if (user) {
                 loginSection.style.display = "none";
                 dashboardSection.style.display = "block";
-                document.getElementById("currentUserDisplay").innerHTML = 
-                    `👤 ${user.username} <span class="badge-outline badge" style="margin-left:8px">${user.role}</span>`;
+                document.getElementById("currentUserDisplay").innerHTML = `👤 ${user.username} <span class="badge-outline badge" style="margin-left:8px">${user.role}</span>`;
                 loadGameData();
             } else {
                 loginSection.style.display = "block";
                 dashboardSection.style.display = "none";
             }
-            // Check connection status
             checkConnection().then(connected => {
                 connectionStatus.className = `badge ${connected ? '' : 'error'}`;
                 connectionStatus.textContent = connected ? '🟢 ONLINE' : '🔴 OFFLINE';
@@ -679,9 +762,7 @@
             try {
                 const res = await fetch(API_URL, { method: "GET" });
                 return res.ok;
-            } catch { 
-                return false; 
-            }
+            } catch { return false; }
         }
 
         // ==================== LOGIN HANDLER ====================
@@ -691,16 +772,12 @@
             const password = document.getElementById("loginPassword").value.trim();
             const loginBtn = document.getElementById("loginBtn");
             
-            if (!username || !password) {
-                showNotify("⚠️ Username and passcode required", true);
-                return;
-            }
+            if (!username || !password) { showNotify("⚠️ Username and passcode required", true); return; }
 
-            // Loading state
-            const originalText = loginBtn.querySelector('.btn-text').innerHTML;
-            loginBtn.classList.add('loading');
-            loginBtn.querySelector('.btn-text').innerHTML = '<span class="loading"></span>Authenticating...';
+            const originalText = loginBtn.innerHTML;
+            loginBtn.innerHTML = `<span class="spinner"></span>Authenticating...`;
             loginBtn.disabled = true;
+            loginBtn.classList.add('loading');
 
             const result = await API.login(username, password);
             
@@ -713,26 +790,19 @@
                 await API.logAction({ username, role: "guest" }, "LOGIN_FAIL", `Attempt: ${username}`);
             }
             
-            // Reset button
-            loginBtn.classList.remove('loading');
-            loginBtn.querySelector('.btn-text').innerHTML = originalText;
+            loginBtn.innerHTML = originalText;
             loginBtn.disabled = false;
+            loginBtn.classList.remove('loading');
         }
 
         // ==================== DATA SYNC ====================
         async function loadGameData() {
             const user = getCurrentUser();
             if (!user) return;
-            
             showNotify("📡 Syncing with central server...");
             const result = await API.getFullData(user);
-            
             if (result.success && result.data) {
                 gameData = result.data;
-                renderStandings(gameData.gangData);
-                renderTimers(gameData.activeTimers);
-                renderVerified(gameData.verifiedTimers);
-                updateWarState(gameData);
                 showNotify("✓ Data synchronized");
                 updateConnectionStatus(true);
             } else {
@@ -743,11 +813,7 @@
 
         async function saveGameData() {
             const user = getCurrentUser();
-            if (!user || !gameData) {
-                showNotify("⚠️ Must be logged in to save", true);
-                return false;
-            }
-            
+            if (!user || !gameData) { showNotify("⚠️ Must be logged in to save", true); return false; }
             const result = await API.saveData(user, gameData);
             if (result.success) {
                 showNotify("💾 Game state saved to cloud");
@@ -759,83 +825,14 @@
             }
         }
 
-        // ==================== UI RENDERERS ====================
-        function renderStandings(gangData) {
-            const tbody = document.getElementById("standingsBody");
-            if (!gangData || Object.keys(gangData).length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No gang data available</td></tr>';
-                return;
-            }
-            
-            // Sort by points descending
-            const sorted = Object.entries(gangData)
-                .sort((a, b) => (b[1].points || 0) - (a[1].points || 0));
-            
-            tbody.innerHTML = sorted.map(([gang, info], idx) => {
-                const status = info.points > 15 ? 'ACTIVE' : info.points > 5 ? 'WARNING' : 'CRITICAL';
-                const statusColor = status === 'ACTIVE' ? '#0f0' : status === 'WARNING' ? '#ff0' : '#f00';
-                return `
-                    <tr>
-                        <td>#${idx + 1}</td>
-                        <td>${gang}</td>
-                        <td>${info.points || 0}</td>
-                        <td>${info.flips || 0}</td>
-                        <td style="color:${statusColor}">${status}</td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        function renderTimers(timers) {
-            const feed = document.getElementById("timerFeed");
-            if (!timers || timers.length === 0) {
-                feed.innerHTML = '<div class="timer-item" style="justify-content:center;"><span>⏸ No active timers</span></div>';
-                return;
-            }
-            
-            feed.innerHTML = timers.map(timer => {
-                const now = Date.now();
-                const remaining = Math.max(0, Math.floor((timer.endTime - now) / 1000));
-                const mins = Math.floor(remaining / 60);
-                const secs = remaining % 60;
-                const timeStr = `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
-                
-                return `
-                    <div class="timer-item ${timer.isUndefended ? 'defending' : ''}">
-                        <span><strong>${timer.attacker}</strong> → ${timer.defender}${timer.isUndefended ? ' (DEFEND)' : ''}</span>
-                        <span>${timeStr}</span>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function renderVerified(verified) {
-            const feed = document.getElementById("verifiedFeed");
-            if (!verified || verified.length === 0) {
-                feed.innerHTML = '<div class="verified-item">✓ No verified flips yet</div>';
-                return;
-            }
-            
-            feed.innerHTML = verified.slice(-5).reverse().map(v => {
-                const date = new Date(v.timestamp).toLocaleTimeString();
-                return `<div class="verified-item">✓ ${v.attacker} flipped ${v.defender} <small style="opacity:0.7">(${date})</small></div>`;
-            }).join('');
-        }
-
-        function updateWarState(data) {
-            document.getElementById("warActiveText").textContent = data.warActive ? "ACTIVE" : "INACTIVE";
-            document.getElementById("warActiveText").style.color = data.warActive ? "#0f0" : "#666";
-            document.getElementById("currentWeekDisplay").textContent = data.currentWeek || 1;
-            document.getElementById("toggleWarBtn").disabled = !currentUser || currentUser.role !== "admin";
-        }
-
         function updateConnectionStatus(online) {
             const badge = document.getElementById("connectionStatus");
+            if (!badge) return;
             badge.className = `badge ${online ? '' : 'error'}`;
             badge.textContent = online ? '🟢 ONLINE' : '🔴 OFFLINE';
         }
 
-        // ==================== NOTIFICATIONS ====================
+        // ==================== NOTIFICATION SYSTEM ====================
         function showNotify(message, isError = false) {
             const notif = document.getElementById('globalNotify');
             if (!notif) return;
@@ -844,7 +841,7 @@
             setTimeout(() => notif.classList.remove('show'), 3800);
         }
 
-        // ==================== MODAL ====================
+        // ==================== MODAL SYSTEM ====================
         const modalOverlay = document.getElementById('demoModal');
         function openModal(title, bodyHtml) {
             if (!modalOverlay) return;
@@ -852,14 +849,13 @@
             document.getElementById('modalDemoBody').innerHTML = bodyHtml;
             modalOverlay.classList.add('active');
         }
-        function closeModalFunc() {
-            modalOverlay?.classList.remove('active');
-        }
+        function closeModalFunc() { modalOverlay?.classList.remove('active'); }
 
         // ==================== MATRIX BACKGROUND ====================
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas?.getContext('2d');
         let width, height, columns, drops = [];
+        let matrixOpacity = 0.32;
 
         function resizeCanvas() {
             if (!canvas) return;
@@ -895,69 +891,43 @@
             setInterval(drawMatrix, 40);
         }
 
-        // ==================== INIT ====================
+        // ==================== INITIALIZATION ====================
         document.addEventListener('DOMContentLoaded', () => {
             startMatrix();
             updateUIForLogin();
             
-            // Login form
+            // Bind login form
             document.getElementById('loginForm')?.addEventListener('submit', handleLoginSubmit);
             
-            // Test connection button
+            // Test connection
             document.getElementById('testConnectionBtn')?.addEventListener('click', async () => {
                 showNotify("📡 Testing connection...");
                 const result = await API._fetch("login", { username: "test", password: "test" });
                 showNotify(result.success ? "✓ Server reachable" : "⚠️ Connection failed: " + (result.error || "Unknown"), !result.success);
             });
+
+            // Demo buttons (preserved from original)
+            document.getElementById('demoNotifyBtn')?.addEventListener('click', () => showNotify('✓ System ready. Matrix core online. War protocol active.', false));
+            document.getElementById('demoModalBtn')?.addEventListener('click', () => openModal('⌨️ COMMAND TERMINAL', `<p>Secure action required. Confirm override?</p><input type="text" placeholder="Reason / Auth code" id="modalAuth" style="width:100%; margin-top: 12px;">`));
+            document.getElementById('openModalStaticBtn')?.addEventListener('click', () => openModal('🗡️ WAR ROOM DIRECTIVE', `<p>This modal follows the exact design from SJRP portal: green border, dark background, animation.</p><textarea placeholder="Encrypted message" rows="2" style="width:100%"></textarea>`));
+            document.getElementById('notifSuccessBtn')?.addEventListener('click', () => showNotify('✔ Timer verified +1 point awarded to Fallen Angels', false));
+            document.getElementById('notifErrorBtn')?.addEventListener('click', () => showNotify('⚠️ ERROR: Shot caller incapacitated. Timers paused.', true));
             
-            // Refresh standings
-            document.getElementById('refreshStandingsBtn')?.addEventListener('click', () => {
-                showNotify("🔄 Refreshing...");
-                loadGameData();
+            // Matrix opacity toggle
+            let highOpacity = true;
+            document.getElementById('toggleMatrixOpacity')?.addEventListener('click', () => {
+                if (highOpacity) { canvas.style.opacity = "0.55"; highOpacity = false; }
+                else { canvas.style.opacity = "0.32"; highOpacity = true; }
             });
-            
-            // Save state button
-            document.getElementById('saveStateBtn')?.addEventListener('click', () => {
-                saveGameData();
-            });
-            
-            // Toggle war (admin only)
-            document.getElementById('toggleWarBtn')?.addEventListener('click', async () => {
-                if (!gameData) return;
-                gameData.warActive = !gameData.warActive;
-                updateWarState(gameData);
-                await saveGameData();
-                showNotify(`War ${gameData.warActive ? 'ACTIVATED' : 'DEACTIVATED'}`);
-            });
-            
+
             // Modal handlers
             document.getElementById('closeModalBtn')?.addEventListener('click', closeModalFunc);
             document.getElementById('modalCancelDemo')?.addEventListener('click', closeModalFunc);
-            document.getElementById('demoModalBtn')?.addEventListener('click', () => {
-                openModal('⌨️ COMMAND TERMINAL', `<p>Secure action required. Confirm override?</p>`);
-            });
-            document.getElementById('openModalStaticBtn')?.addEventListener('click', () => {
-                openModal('🗡️ WAR ROOM DIRECTIVE', `<p>Modal styled after SJRP portal.</p>`);
-            });
-            modalOverlay?.addEventListener('click', (e) => {
-                if (e.target === modalOverlay) closeModalFunc();
-            });
-            
-            // Demo notifications
-            document.getElementById('demoNotifyBtn')?.addEventListener('click', () => {
-                showNotify('✓ System ready. Matrix core online.');
-            });
-            document.getElementById('notifSuccessBtn')?.addEventListener('click', () => {
-                showNotify('✔ Timer verified +1 point awarded');
-            });
-            document.getElementById('notifErrorBtn')?.addEventListener('click', () => {
-                showNotify('⚠️ ERROR: Shot caller incapacitated', true);
-            });
-            
-            // Auto-load if already logged in
-            if (getCurrentUser()) {
-                loadGameData();
-            }
+            document.getElementById('modalConfirmDemo')?.addEventListener('click', () => { showNotify('Command acknowledged. Modal closed.'); closeModalFunc(); });
+            modalOverlay?.addEventListener('click', (e) => { if (e.target === modalOverlay) closeModalFunc(); });
+
+            // Timer item hover fix
+            document.querySelectorAll('.timer-item').forEach(item => { item.style.cursor = 'default'; });
             
             console.log('🎮 Terminal 2.0 initialized — API: ' + API_URL);
         });

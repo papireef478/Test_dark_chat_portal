@@ -477,6 +477,32 @@
             <div><span class="badge">ACTIVE STYLE GUIDE</span></div>
         </div>
 
+        <!-- LOGIN SECTION -->
+<div id="loginSection" class="card" style="max-width: 400px; margin: 2rem auto;">
+    <h3 style="text-align: center;">🔐 AGENT AUTHENTICATION</h3>
+    <form id="loginForm" style="margin-top: 1.5rem;">
+        <label>Callsign / Username</label>
+        <input type="text" id="loginUsername" placeholder="gh0st_operator" required autocomplete="username">
+        
+        <label style="margin-top: 12px;">Passcode</label>
+        <input type="password" id="loginPassword" placeholder="••••••••" required autocomplete="current-password">
+        
+        <button type="submit" class="btn" style="width: 100%; margin-top: 1.5rem;">
+            ▶ ESTABLISH CONNECTION
+        </button>
+    </form>
+    <div class="section-sub" style="text-align: center; margin-top: 12px;">
+        New agent? Contact War Host for credentials.
+    </div>
+</div>
+
+<!-- DASHBOARD SECTION (hidden until login) -->
+<div id="dashboardSection" style="display: none;">
+    <div class="flex-between" style="margin-bottom: 1rem; padding: 0.5rem 1rem; background: rgba(0,255,0,0.1); border-radius: 4px;">
+        <span id="currentUserDisplay">👤 <em>Guest</em></span>
+        <button class="btn small danger" onclick="logout()">🚪 LOGOUT</button>
+    </div>
+        
         <!-- 1. COLOR PALETTE -->
         <div class="card">
             <h3>🎨 CHROMATIC COMMAND</h3>

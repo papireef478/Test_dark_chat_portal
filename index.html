@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>DESIGN GUIDE · TERMINAL 2.0 · MATRIX CORE</title>
+    <style>
+        /* ---------- GLOBAL RESET & DESIGN TOKENS ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --matrix-green: #0f0;
+            --matrix-glow: rgba(0, 255, 0, 0.4);
+            --dark-bg: #000000;
+            --panel-bg: rgba(0, 0, 0, 0.88);
+            --card-bg: rgba(0, 0, 0, 0.85);
+            --input-bg: #111111;
+            --border-subtle: #333;
+            --danger-red: #f00;
+            --danger-glow: rgba(255, 0, 0, 0.3);
+            --warning-yellow: #ff0;
+            --font-mono: 'Courier New', 'Fira Code', 'Source Code Pro', monospace;
+            --transition-fast: 0.2s ease;
+            --border-radius: 8px;
+            --card-radius: 8px;
+        }
+
+        body {
+            background: var(--dark-bg);
+            color: var(--matrix-green);
+            font-family: var(--font-mono);
+            overflow-x: hidden;
+            line-height: 1.5;
+        }
+
+        /* ----- MATRIX BACKGROUND (ENHANCED VISIBILITY) ----- */
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.32;          /* more present than original 0.15 — dynamic but elegant */
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        /* main content layer */
+        .design-guide {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* ----- TYPOGRAPHY & HEADERS ----- */
+        h1, h2, h3, h4, .glow-text {
+            font-family: var(--font-mono);
+            letter-spacing: 1px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            text-shadow: 0 0 8px var(--matrix-green);
+            margin-bottom: 0.5rem;
+            border-left: 4px solid var(--matrix-green);
+            padding-left: 1rem;
+        }
+
+        h2 {
+            font-size: 1.6rem;
+            border-bottom: 2px solid var(--matrix-green);
+            display: inline-block;
+            margin: 1.5rem 0 1rem;
+            padding-bottom: 0.25rem;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            border-left: 4px solid var(--matrix-green);
+            padding-left: 12px;
+            margin: 1rem 0 1rem;
+        }
+
+        .section-sub {
+            color: #2e8b57;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            border-left: 2px solid #0f0;
+            padding-left: 0.75rem;
+        }
+
+        /* ----- CARD SYSTEM (replica from original) ----- */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--matrix-green);
+            border-radius: var(--card-radius);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(2px);
+            transition: box-shadow 0.2s;
+        }
+
+        .card:hover {
+            box-shadow: 0 0 12px rgba(0, 255, 0, 0.2);
+        }
+
+        /* grid layout */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* ----- BUTTONS (exact style from portal) ----- */
+        .btn {
+            background: var(--matrix-green);
+            color: #000;
+            border: none;
+            padding: 10px 22px;
+            font-weight: bold;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all var(--transition-fast);
+            margin: 4px 6px 4px 0;
+            display: inline-block;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+
+        .btn:hover {
+            background: #0c0;
+            box-shadow: 0 0 12px var(--matrix-green);
+            transform: translateY(-1px);
+        }
+
+        .btn.small {
+            padding: 5px 12px;
+            font-size: 0.75rem;
+        }
+
+        .btn.danger {
+            background: var(--danger-red);
+            color: white;
+        }
+
+        .btn.danger:hover {
+            background: #cc0000;
+            box-shadow: 0 0 10px var(--danger-red);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ----- FORM ELEMENTS (inputs, selects, textarea) ----- */
+        input, select, textarea {
+            background: var(--input-bg);
+            border: 1px solid var(--matrix-green);
+            color: var(--matrix-green);
+            padding: 10px 12px;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            border-radius: 4px;
+            outline: none;
+            width: 100%;
+            transition: 0.15s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            box-shadow: 0 0 8px var(--matrix-green);
+            border-color: #0f0;
+        }
+
+        label {
+            font-size: 0.85rem;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+            letter-spacing: 0.5px;
+        }
+
+        /* ----- TABLES (standings style) ----- */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 10px 8px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        th {
+            color: var(--matrix-green);
+            border-bottom: 2px solid var(--matrix-green);
+            font-weight: bold;
+        }
+
+        /* ----- TIMER FEED & ITEMS (replica) ----- */
+        .timer-feed, .pending-timers {
+            max-height: 280px;
+            overflow-y: auto;
+            background: #0a0a0a;
+            padding: 12px;
+            border-radius: 4px;
+            border: 1px solid #333;
+        }
+
+        .timer-item {
+            border-left: 3px solid var(--matrix-green);
+            padding: 10px 15px;
+            margin: 8px 0;
+            background: #111;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 0.85rem;
+        }
+
+        .timer-item.defending {
+            border-left-color: var(--danger-red);
+        }
+
+        .verified-item {
+            border-left: 3px solid #0f0;
+            padding: 8px 12px;
+            background: #111;
+            margin: 6px 0;
+        }
+
+        /* ----- BADGES ----- */
+        .badge {
+            background: var(--matrix-green);
+            color: #000;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            display: inline-block;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-outline {
+            border: 1px solid var(--matrix-green);
+            background: transparent;
+            color: var(--matrix-green);
+        }
+
+        /* ----- NAVBAR (tabs style) ----- */
+        .nav-bar {
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid var(--matrix-green);
+            padding: 12px 20px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .nav-bar a {
+            color: var(--matrix-green);
+            text-decoration: none;
+            font-weight: bold;
+            padding: 6px 14px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .nav-bar a:hover, .nav-bar a.active {
+            background: var(--matrix-green);
+            color: #000;
+        }
+
+        /* ----- MODAL (exact replica from original) ----- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.96);
+            backdrop-filter: blur(6px);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #111;
+            border: 2px solid var(--matrix-green);
+            padding: 25px;
+            max-width: 500px;
+            width: 90%;
+            border-radius: 12px;
+            box-shadow: 0 0 40px rgba(0, 255, 0, 0.3);
+            animation: modalSlide 0.25s ease-out;
+        }
+
+        @keyframes modalSlide {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #0f0;
+            padding-bottom: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .modal-close {
+            font-size: 28px;
+            cursor: pointer;
+            color: #0f0;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 1.5rem;
+        }
+
+        /* ----- NOTIFICATION (toast) ----- */
+        .notification {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            background: #111;
+            border: 2px solid var(--matrix-green);
+            padding: 14px 20px;
+            border-radius: 8px;
+            z-index: 9999;
+            display: none;
+            max-width: 380px;
+            font-family: monospace;
+            font-weight: bold;
+            backdrop-filter: blur(5px);
+        }
+
+        .notification.error {
+            border-color: var(--danger-red);
+            color: #f77;
+        }
+
+        .notification.show {
+            display: block;
+            animation: slideRight 0.25s ease-out;
+        }
+
+        @keyframes slideRight {
+            from { transform: translateX(400px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* ----- RULE CARD / HIGHLIGHT ----- */
+        .rule-card {
+            background: #111;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid var(--matrix-green);
+        }
+
+        .week-highlight {
+            background: #0f0;
+            color: #000;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        /* scrollbar matching terminal */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #000;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #0f0;
+            border-radius: 4px;
+        }
+
+        /* color swatch utility */
+        .color-swatch {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            margin-right: 10px;
+            border: 1px solid #2c2c2c;
+            vertical-align: middle;
+        }
+
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        hr {
+            border-color: #0f0;
+            margin: 1rem 0;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            font-size: 0.7rem;
+            opacity: 0.7;
+            border-top: 1px solid #0f0;
+            padding: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Matrix Rain Canvas (Enhanced Presence) -->
+    <canvas id="matrix-canvas"></canvas>
+
+    <!-- Notification Container (demo) -->
+    <div id="globalNotify" class="notification"></div>
+
+    <!-- Modal structure (design demo) -->
+    <div id="demoModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalDemoTitle">✨ System Message</h3>
+                <span class="modal-close" id="closeModalBtn">&times;</span>
+            </div>
+            <div class="modal-body" id="modalDemoBody">
+                <p>This is a modal window styled after the SJRP portal. Perfect for alerts, confirmations, or data entry.</p>
+                <input type="text" placeholder="Sample input field" id="demoModalInput" style="margin-top: 12px;">
+            </div>
+            <div class="modal-footer">
+                <button id="modalCancelDemo" class="btn small">Cancel</button>
+                <button id="modalConfirmDemo" class="btn">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="design-guide">
+        <!-- Header -->
+        <div class="flex-between" style="margin-bottom: 1rem;">
+            <div>
+                <h1>⎯ DESIGN SYSTEM ⎯<span style="font-size:1.2rem;">  TERMINAL v2.0</span></h1>
+                <div class="section-sub">Matrix core · neon phosphor · tactical UI components</div>
+            </div>
+            <div><span class="badge">ACTIVE STYLE GUIDE</span></div>
+        </div>
+
+        <!-- 1. COLOR PALETTE -->
+        <div class="card">
+            <h3>🎨 CHROMATIC COMMAND</h3>
+            <div style="display: flex; flex-wrap: wrap; gap: 24px; margin-top: 12px;">
+                <div><span class="color-swatch" style="background: #000; border:1px solid #0f0;"></span> <strong>#000000</strong> — Abyss</div>
+                <div><span class="color-swatch" style="background: #0f0;"></span> <strong>#0f0 / lime</strong> — Primary glow</div>
+                <div><span class="color-swatch" style="background: #111;"></span> <strong>#111</strong> — Input bg</div>
+                <div><span class="color-swatch" style="background: #f00;"></span> <strong>#f00</strong> — Danger/Alert</div>
+                <div><span class="color-swatch" style="background: #ff0;"></span> <strong>#ff0</strong> — Highlight</div>
+                <div><span class="color-swatch" style="background: rgba(0,0,0,0.85); border:1px solid #0f0;"></span> <strong>rgba(0,0,0,0.85)</strong> — Cards</div>
+            </div>
+            <div style="margin-top: 16px;"><span class="badge">#0f0 glow</span> <span class="badge-outline badge" style="background:transparent;">box-shadow: 0 0 12px #0f0</span></div>
+        </div>
+
+        <!-- 2. TYPOGRAPHY -->
+        <div class="card">
+            <h3>⌨️ TYPEFACE & SCALE</h3>
+            <p style="font-family: monospace;">Primary: 'Courier New', 'Fira Code', monospace — all caps / code aesthetic.</p>
+            <div style="font-size: 2rem; text-shadow:0 0 5px #0f0;">GLOWING HEADER</div>
+            <div style="font-size: 1.2rem; margin: 8px 0;">Terminal body text — crisp, readable, immersive.</div>
+            <div class="badge">UPPERCASE BADGE</div>
+            <div class="section-sub" style="margin-top: 8px;">Letter-spacing: 1px for headings, monospace everywhere.</div>
+        </div>
+
+        <!-- 3. BUTTON FAMILY -->
+        <div class="card">
+            <h3>🔘 BUTTONS — ACTION READY</h3>
+            <div>
+                <button class="btn">Primary Action</button>
+                <button class="btn small">Small</button>
+                <button class="btn danger">Destructive</button>
+                <button class="btn" disabled>Disabled</button>
+                <button class="btn small" style="background:#222; color:#0f0; border:1px solid #0f0;">Outline Variant</button>
+            </div>
+            <div style="margin-top: 16px;">
+                <button class="btn small" id="demoNotifyBtn">📡 SHOW NOTIFICATION</button>
+                <button class="btn small" id="demoModalBtn">🗔 OPEN MODAL</button>
+            </div>
+            <div class="section-sub" style="margin-top: 12px;">Hover: translateY(-1px) + glow shadow. Danger red with contrast.</div>
+        </div>
+
+        <!-- 4. FORM ELEMENTS (inputs, selects) -->
+        <div class="card">
+            <h3>📝 INPUTS / TERMINAL FIELDS</h3>
+            <div class="grid-2">
+                <div>
+                    <label>Username / Callsign</label>
+                    <input type="text" placeholder="gh0st_operator" value="SJRP_Agent">
+                    <label style="margin-top: 12px;">Passphrase</label>
+                    <input type="password" placeholder="••••••••">
+                </div>
+                <div>
+                    <label>Gang selection</label>
+                    <select>
+                        <option>Fallen Angels</option>
+                        <option>Phantom Rose</option>
+                        <option>99OTF</option>
+                        <option>Noctis</option>
+                    </select>
+                    <label style="margin-top: 12px;">Mission brief</label>
+                    <textarea rows="2" placeholder="Encrypted message..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. CARDS & GRID -->
+        <div class="grid-2">
+            <div class="card">
+                <h3>🏆 STANDINGS CARD</h3>
+                <table style="width:100%">
+                    <thead><tr><th>Rank</th><th>Gang</th><th>Points</th></tr></thead>
+                    <tbody>
+                        <tr><td>#1</td><td>Fallen Angels</td><td>24</td></tr>
+                        <tr><td>#2</td><td>Phantom Rose</td><td>19</td></tr>
+                        <tr><td>#3</td><td>99OTF</td><td>15</td></tr>
+                    </tbody>
+                </table>
+                <button class="btn small" style="margin-top: 8px;">VIEW FULL STANDINGS</button>
+            </div>
+            <div class="card">
+                <h3>⏲️ TIMER FEED (ACTIVE)</h3>
+                <div class="timer-feed" style="max-height: 200px;">
+                    <div class="timer-item">
+                        <span><strong>Fallen Angels</strong> → Phantom Rose</span>
+                        <span>03:24</span>
+                    </div>
+                    <div class="timer-item defending">
+                        <span><strong>99OTF</strong> → Noctis (DEFEND)</span>
+                        <span>01:12</span>
+                    </div>
+                    <div class="timer-item">
+                        <span>Black Lotus MC → Vipers Curse</span>
+                        <span>04:56</span>
+                    </div>
+                </div>
+                <div class="verified-item">✓ Verified: Fallen Angels flipped Noctis</div>
+            </div>
+        </div>
+
+        <!-- 6. TABLE (detailed) -->
+        <div class="card">
+            <h3>📊 DATA TABLE / WAR LEDGER</h3>
+            <table>
+                <thead><tr><th>Gang</th><th>Flips</th><th>Losses</th><th>Size</th><th>Status</th></tr></thead>
+                <tbody>
+                    <tr><td>Fallen Angels</td><td>12</td><td>2</td><td>14</td><td style="color:#0f0;">ACTIVE</td></tr>
+                    <tr><td>Phantom Rose</td><td>8</td><td>5</td><td>9</td><td style="color:#ff0;">WARNING</td></tr>
+                    <tr><td>Noctis</td><td>4</td><td>7</td><td>6</td><td style="color:#f00;">CRITICAL</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 7. RULES / TREATY STYLE -->
+        <div class="card">
+            <h3>📜 TREATY CARD (RULE PREVIEW)</h3>
+            <div class="rule-card">
+                <strong>🔹 BLOCK WAR MECHANICS</strong>
+                <p>Attack enemy home block with 3+ members, start push timer (5min). Hold to earn points. Defend by stopping enemy timer.</p>
+            </div>
+            <div class="rule-card">
+                <strong>🔹 SHOT CALLER PROTOCOL</strong>
+                <p>Only designated Shot Callers can start/stop timers. If killed, gang suffers 15min cooldown.</p>
+            </div>
+            <div class="rule-card">
+                <strong>🔹 PD INFORMANT ROLE</strong>
+                <p>Undercover officers verify flips. Killing an informant gives +3 points and pauses war timers.</p>
+            </div>
+        </div>
+
+        <!-- 8. NAVBAR & BADGES -->
+        <div class="nav-bar">
+            <a class="active">Dashboard</a>
+            <a>Treaty</a>
+            <a>Cookout</a>
+            <a>Intel Hub</a>
+            <a style="margin-left:auto;">🔒 War Room</a>
+        </div>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 1rem;">
+            <span class="badge">HOST: FALLEN ANGELS</span>
+            <span class="badge-outline badge" style="background:transparent;">WEEK 2 · WAR ACTIVE</span>
+            <span class="badge" style="background:#f00; color:white;">EMERGENCY</span>
+            <span class="week-highlight">COOKOUT EVENT</span>
+        </div>
+
+        <!-- 9. MODAL PREVIEW + NOTIFICATION DEMO already handled by JS but show static style -->
+        <div class="grid-2">
+            <div class="card">
+                <h3>🗃️ MODAL OVERLAY STYLE</h3>
+                <p>Dark backdrop + green border, smooth animation, form fields. Click below to open live modal.</p>
+                <button class="btn" id="openModalStaticBtn">OPEN DEMO MODAL</button>
+            </div>
+            <div class="card">
+                <h3>🔔 NOTIFICATION TOAST</h3>
+                <p>Floating alert system (top-right) with error/success variants. Auto-dismiss after 3.5s.</p>
+                <button class="btn small" id="notifSuccessBtn">✨ SUCCESS NOTIFY</button>
+                <button class="btn small danger" id="notifErrorBtn" style="margin-left: 5px;">⚠️ ERROR NOTIFY</button>
+            </div>
+        </div>
+
+        <!-- 10. MATRIX BACKGROUND NOTE -->
+        <div class="card">
+            <h3>🌌 MATRIX BACKGROUND (ACTIVE)</h3>
+            <p><span class="badge">live canvas</span> Dynamic binary rain with configurable opacity, speed, and green phosphor. The missing element is now restored with enhanced visibility (opacity 0.32) but can be customized via CSS. Terminal effect creates immersive cyberpunk atmosphere.</p>
+            <div class="flex-between" style="margin-top: 10px;">
+                <span>🔧 Customization: change canvas opacity, char set, or fall speed in JS.</span>
+                <button id="toggleMatrixOpacity" class="btn small">🌓 TOGGLE OPACITY (HIGH/LOW)</button>
+            </div>
+        </div>
+
+        <footer>
+            DESIGN SYSTEM v1.0 — Extracted from SJRP Drug Trust Portal — Fonts, Buttons, Matrix core, Cards, Timer items, Terminal palette. 
+            All components ready for integration.
+        </footer>
+    </div>
+
+    <script>
+        // -------------------- ENHANCED MATRIX BACKGROUND (from original but more vivid) --------------------
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let columns, drops = [];
+        let matrixOpacity = 0.32;   // default richer than 0.15
+
+        function resizeCanvas() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+            columns = Math.floor(width / 18);  // character width approx 16px
+            drops = Array(columns).fill(1);
+        }
+
+        const chars = "01";   // binary classic
+        function drawMatrix() {
+            if (!ctx) return;
+            ctx.fillStyle = `rgba(0, 0, 0, 0.05)`;
+            ctx.fillRect(0, 0, width, height);
+            ctx.fillStyle = '#0f0';
+            ctx.font = '16px monospace';
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                const x = i * 18;
+                const y = drops[i] * 18;
+                ctx.fillText(text, x, y);
+                if (y > height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+
+        function startMatrix() {
+            resizeCanvas();
+            window.addEventListener('resize', () => { resizeCanvas(); });
+            setInterval(drawMatrix, 40);
+        }
+
+        // apply dynamic opacity to canvas
+        function updateCanvasOpacity(value) {
+            const canvasElem = document.getElementById('matrix-canvas');
+            canvasElem.style.opacity = value;
+        }
+
+        startMatrix();
+        
+        // toggle opacity between high and medium for demonstration
+        let highOpacity = true;
+        document.getElementById('toggleMatrixOpacity')?.addEventListener('click', () => {
+            if (highOpacity) {
+                updateCanvasOpacity(0.55);
+                highOpacity = false;
+            } else {
+                updateCanvasOpacity(0.32);
+                highOpacity = true;
+            }
+        });
+
+        // -------------------- NOTIFICATION SYSTEM (replica from original) --------------------
+        function showNotify(message, isError = false) {
+            const notif = document.getElementById('globalNotify');
+            if (!notif) return;
+            notif.textContent = message;
+            notif.className = `notification ${isError ? 'error' : ''} show`;
+            setTimeout(() => {
+                notif.classList.remove('show');
+            }, 3800);
+        }
+
+        document.getElementById('demoNotifyBtn')?.addEventListener('click', () => {
+            showNotify('✓ System ready. Matrix core online. War protocol active.', false);
+        });
+        document.getElementById('notifSuccessBtn')?.addEventListener('click', () => {
+            showNotify('✔ Timer verified +1 point awarded to Fallen Angels', false);
+        });
+        document.getElementById('notifErrorBtn')?.addEventListener('click', () => {
+            showNotify('⚠️ ERROR: Shot caller incapacitated. Timers paused.', true);
+        });
+
+        // -------------------- MODAL DEMO (faithful to original style) --------------------
+        const modalOverlay = document.getElementById('demoModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const modalCancel = document.getElementById('modalCancelDemo');
+        const modalConfirm = document.getElementById('modalConfirmDemo');
+        
+        function openModal(title, bodyHtml) {
+            if (!modalOverlay) return;
+            document.getElementById('modalDemoTitle').innerHTML = title;
+            document.getElementById('modalDemoBody').innerHTML = bodyHtml;
+            modalOverlay.classList.add('active');
+        }
+
+        function closeModalFunc() {
+            modalOverlay.classList.remove('active');
+        }
+
+        document.getElementById('demoModalBtn')?.addEventListener('click', () => {
+            openModal('⌨️ COMMAND TERMINAL', `<p>Secure action required. Confirm override?</p><input type="text" placeholder="Reason / Auth code" id="modalAuth" style="width:100%; margin-top: 12px;">`);
+        });
+        document.getElementById('openModalStaticBtn')?.addEventListener('click', () => {
+            openModal('🗡️ WAR ROOM DIRECTIVE', `<p>This modal follows the exact design from SJRP portal: green border, dark background, animation.</p><textarea placeholder="Encrypted message" rows="2" style="width:100%"></textarea>`);
+        });
+
+        if (closeModalBtn) closeModalBtn.onclick = closeModalFunc;
+        if (modalCancel) modalCancel.onclick = closeModalFunc;
+        if (modalConfirm) modalConfirm.onclick = () => {
+            showNotify('Command acknowledged. Modal closed.');
+            closeModalFunc();
+        };
+        // clicking outside
+        modalOverlay?.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) closeModalFunc();
+        });
+
+        // add extra interactive style for timer demo (just to match design)
+        const timerItems = document.querySelectorAll('.timer-item');
+        timerItems.forEach(item => {
+            item.style.cursor = 'default';
+        });
+        
+        // simulate dynamic timestamp for timer-feed? Not needed but design guide shows real example
+        console.log('Design Guide loaded — Matrix background active, components ready');
+    </script>
+</body>
+</html>
